@@ -1,0 +1,5 @@
+org\wpq\cms\mapper\TestMapper.class
+org\wpq\cms\mapper\TestTemporary.class
+org\wpq\cms\mapper\TestChannelDao.class
+org\wpq\cms\mapper\TestDBUnitBase.class
+org\wpq\cms\mapper\TestTopic.class

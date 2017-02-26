@@ -1,0 +1,6 @@
+org\wpq\cms\service\GroupService.class
+org\wpq\cms\service\IUserService.class
+org\wpq\cms\service\UserService.class
+org\wpq\cms\service\RoleService.class
+org\wpq\cms\service\IGroupService.class
+org\wpq\cms\service\IRoleService.class

@@ -1,0 +1,83 @@
+* {
+	margin:0px;
+	padding:0px;	
+	font-size:14px;
+	font-family: "MicrosoftYaHei";
+}
+#leftNav{
+}
+/*dl.navList dd{
+	display: none;
+}
+dl.expand dd{
+	display: block;
+}
+dl.navList dt{
+	width:200px;
+	height:30px;
+	background: url("img/nav_bar02.jpg") no-repeat;
+	color:#fff;
+}
+dl.expand dt{
+	background: url("img/nav_bar_expand02.jpg") no-repeat;
+}
+dl.navList span{
+	position:relative;
+	top:9px;
+	left:50px;
+}
+dl.navList dd{
+	background:url("img/button01.jpg") no-repeat;
+	background-position:7px 12px;
+	padding:10px 0px;
+}
+dl.navList a:link,dl.navList a:visited{
+	position: relative;
+	left:25px;
+	color:#465255;
+	text-decoration: none;
+}
+dl.navList a:hover{
+	color:#932;
+	text-decoration: underline;
+}*/
+.accordion-header{
+	display: block;
+	cursor: pointer;
+	position: relative;
+	margin-top:3px;
+	padding: 5px 5px 5px 25px;
+	border: 1px solid #c5c5c5;
+	background: #f6f6f6;
+	font-weight: normal;
+	color: #454545;
+}
+.accordion-header-hover{
+	background:#ededed;
+	color: #2b2b2b;
+}
+.accordion-header-selected{
+	background:#2c7fc3;
+	color: #fff;
+}
+.accordion-content{
+	list-style:none;
+	padding: 10px 0px 10px 35px;
+	border: 1px solid #bbb;
+	border-top:0;
+	overflow: auto;
+}
+.accordion-content-li{
+	margin:5px 0px 10px 0px;		
+}
+.accordion-content-hover{
+	display:none;
+}
+a:link,a:visited{
+	color:#465255;
+	text-decoration: none;
+}
+a:hover{
+	color:#932;
+	text-decoration: underline;
+}

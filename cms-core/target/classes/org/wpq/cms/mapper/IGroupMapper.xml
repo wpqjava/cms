@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.IGroupMapper">  
+
+
+<insert id="add" parameterType="org.wpq.cms.model.Group" flushCache="true" useGeneratedKeys="true" keyProperty="id">  
+   insert into t_group values (null,#{name},#{descri})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_group where id=#{id}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.Group">
+	update t_group set name=#{name},descri=#{descri} where id=#{id}
+</update>
+
+<select id="load" parameterType="int" resultType="org.wpq.cms.model.Group">
+	select * from t_group where id=#{id}
+</select>
+
+<select id="listAll" resultType="org.wpq.cms.model.Group">
+	select * from t_group
+</select>
+
+<select id="listByParams" resultType="org.wpq.cms.model.Group" parameterType="map">
+	select * from t_group
+	<where>
+		<if test="condition!=null">name like #{condition} or descri like #{condition}</if>
+	</where>
+</select>
+
+</mapper>

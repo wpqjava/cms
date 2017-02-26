@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.IGroupChannelMapper">  
+
+
+<insert id="add" parameterType="org.wpq.cms.model.GroupChannel" flushCache="true" useGeneratedKeys="true" keyProperty="id">  
+   insert into t_group_channel values (null,#{group.id},#{channel.id})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_group_channel where id=#{id}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.GroupChannel">
+	update t_channel set group_id=#{group.id},channel_id=#{channel.id} where id=#{id}
+</update>
+
+<select id="listGroupChannelIdsByGroupId" resultType="Integer" parameterType="int">
+	select id from t_group_channel where group_id=#{id}
+</select>
+
+<select id="listGroupIdsByChannelId" resultType="Integer" parameterType="int">
+	select group_id from t_group_channel where channel_id=#{id}
+</select>
+
+<select id="listChannelIdsByGroupId" resultType="Integer" parameterType="int">
+	select channel_id from t_group_channel where group_id=#{id}
+</select>
+
+
+<select id="getGroupChannelTreeByGroupId" resultMap="channelTreeMap" parameterType="int">
+	select t3.id as 'id',t3.name as 'name',t3.channel_id as 'channel_id' 
+	from t_group_channel t1 left join t_group t2 on (t1.group_id=t2.id) 
+	left join t_channel t3 on (t1.channel_id=t3.id)  where t2.id=#{id}
+</select>
+
+<select id="getGroupChannelTreeByUserId" resultMap="channelTreeMap" parameterType="int">
+	select distinct t3.id as 'id',t3.name as 'name',t3.channel_id as 'channel_id' 
+	from t_group_channel t1 left join t_group t2 on (t1.group_id=t2.id) 
+	left join t_channel t3 on (t1.channel_id=t3.id) 
+	left join t_user_group t4 on (t2.id=t4.group_id)
+	 where t4.user_id=#{id}
+</select>
+
+<delete id="deleteByGroupId" parameterType="int">
+	delete from t_group_channel where group_id=#{id}
+</delete>
+
+<delete id="deleteByGroupIdChannelId" parameterType="map">
+	delete from t_group_channel where group_id=#{gid} and channel_id=#{cid}
+</delete>
+
+
+<resultMap type="org.wpq.cms.model.Channel" id="channelMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="t1_name" property="name"/>
+	<result column="t1_custom_link" property="customLink"/>
+	<result column="t1_custom_link_url" property="customLinkUrl"/>
+	<result column="t1_is_top_intro" property="isTopIntro"/>
+	<result column="t1_isNav" property="isNav"/>
+	<result column="t1_is_recomman" property="isRecomman"/>
+	<result column="t1_status" property="status"/>
+	<result column="t1_orders" property="orders"/>
+	<result column="t1_channel_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="channelType"/>
+	<association property="channel" javaType="org.wpq.cms.model.Channel" autoMapping="true">
+		<id column="channel_id" property="id"/>
+		<result column="t2_name" property="name"/>
+	</association>
+</resultMap>
+
+<resultMap type="org.wpq.cms.model.ChannelTree" id="channelTreeMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="channel_id" property="pid"/>
+</resultMap>
+
+<resultMap type="org.wpq.cms.model.Channel" id="defaultChannelMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="custom_link" property="customLink"/>
+	<result column="custom_link_url" property="customLinkUrl"/>
+	<result column="is_top_intro" property="isTopIntro"/>
+	<result column="isNav" property="isNav"/>
+	<result column="is_recomman" property="isRecomman"/>
+	<result column="status" property="status"/>
+	<result column="orders" property="orders"/>
+	<result column="channel_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="channelType"/>
+	<association property="channel" javaType="org.wpq.cms.model.Channel" autoMapping="true">
+		<id column="channel_id" property="id"/>
+	</association>
+</resultMap>
+
+</mapper>

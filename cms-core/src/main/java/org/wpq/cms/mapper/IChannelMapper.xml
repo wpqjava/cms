@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.IChannelMapper">  
+
+
+<insert id="add" parameterType="org.wpq.cms.model.Channel" flushCache="true" useGeneratedKeys="true" keyProperty="id">  
+   insert into t_channel values (null,#{name},#{customLink},#{customLinkUrl},
+   #{channelType,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+   #{isTopIntro},#{isNav},#{isRecommend},#{status},#{orders},#{channel.id})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_channel where id=#{id}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.Channel">
+	update t_channel set name=#{name},custom_link=#{customLink},custom_link_url=#{customLinkUrl},
+   channel_type=#{channelType,typeHandler=org.apache.ibatis.type.EnumTypeHandler},
+   is_top_intro=#{isTopIntro},is_nav=#{isNav},is_recommend=#{isRecommend},status=#{status},
+   orders=#{orders} where id=#{id}
+</update>
+
+<update id="updateSorts" parameterType="map">
+	update t_channel set orders=#{index} where id=#{id}
+</update>
+
+<select id="load" parameterType="int" resultMap="channelMap">
+	select *,
+	t1.id as 't1_id',t1.name as 't1_name',t1.custom_link as 't1_custom_link',t1.custom_link_url as 't1_custom_link_url',
+	t1.channel_type as 't1_channel_type',t1.is_top_intro as 't1_is_top_intro',t1.is_nav as 't1_is_nav',
+	t1.is_recommend as 't1_is_recommend',t1.status as 't1_status',t1.orders as 't1_orders',t2.name as 't2_name'
+	from t_channel t1 left join t_channel t2 on (t1.channel_id = t2.id) where t1.id=#{id}
+</select>
+
+<select id="listAll" resultMap="channelMap">
+	select *,
+	t1.id as 't1_id',t1.name as 't1_name',t1.custom_link as 't1_custom_link',t1.custom_link_url as 't1_custom_link_url',
+	t1.channel_type as 't1_channel_type',t1.is_top_intro as 't1_is_top_intro',t1.is_nav as 't1_is_nav',
+	t1.is_recommend as 't1_is_recommend',t1.status as 't1_status',t1.orders as 't1_orders',t2.name as 't2_name'
+	from t_channel t1 left join t_channel t2 on (t1.channel_id = t2.id) 
+</select>
+
+<select id="getChannelTree" resultMap="channelTreeMap">
+	select id,name,channel_id from t_channel order by orders
+</select>
+
+<select id="listPublishableChannel" resultMap="defaultChannelMap">
+	select id,name from t_channel where channel_type != 'NAV_CHANNEL'
+</select>
+
+<select id="listByParentId" resultMap="defaultChannelMap" parameterType="map">
+	select * from t_channel where channel_id
+	<choose>
+	 <when test="pid==0">
+	 is null
+	 </when>
+	 <otherwise>
+	 =#{pid}
+	 </otherwise>
+	 </choose>
+	 order by orders
+</select>
+
+<resultMap type="org.wpq.cms.model.Channel" id="channelMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="t1_name" property="name"/>
+	<result column="t1_custom_link" property="customLink"/>
+	<result column="t1_custom_link_url" property="customLinkUrl"/>
+	<result column="t1_is_top_intro" property="isTopIntro"/>
+	<result column="t1_isNav" property="isNav"/>
+	<result column="t1_is_recommend" property="isRecommend"/>
+	<result column="t1_status" property="status"/>
+	<result column="t1_orders" property="orders"/>
+	<result column="t1_channel_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="channelType"/>
+	<association property="channel" javaType="org.wpq.cms.model.Channel" autoMapping="true">
+		<id column="channel_id" property="id"/>
+		<result column="t2_name" property="name"/>
+	</association>
+</resultMap>
+
+<resultMap type="org.wpq.cms.model.ChannelTree" id="channelTreeMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="channel_id" property="pid"/>
+</resultMap>
+
+<resultMap type="org.wpq.cms.model.Channel" id="defaultChannelMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="name" property="name"/>
+	<result column="custom_link" property="customLink"/>
+	<result column="custom_link_url" property="customLinkUrl"/>
+	<result column="is_top_intro" property="isTopIntro"/>
+	<result column="isNav" property="isNav"/>
+	<result column="is_recommend" property="isRecommend"/>
+	<result column="status" property="status"/>
+	<result column="orders" property="orders"/>
+	<result column="channel_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="channelType"/>
+	<association property="channel" javaType="org.wpq.cms.model.Channel" autoMapping="true">
+		<id column="channel_id" property="id"/>
+	</association>
+</resultMap>
+
+</mapper>

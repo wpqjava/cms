@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.IKeywordMapper">  
+<insert id="add" parameterType="org.wpq.cms.model.Keyword" flushCache="true" useGeneratedKeys="true" keyProperty="id">  
+   insert into t_keyword values (null,#{name},#{fullPY},#{shortPY})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_keyword where id=#{id}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.Keyword">
+	update t_keyword set name=#{name},
+	fullpy=#{fullPY},
+	shortpy=#{shortPY}
+	where id=#{id}
+</update>
+
+<select id="load" parameterType="int" resultType="org.wpq.cms.model.Keyword">
+	select *
+	from t_keyword 
+	where id=#{id}
+</select>
+
+<select id="loadByName" parameterType="String" resultType="org.wpq.cms.model.Keyword">
+	select *
+	from t_keyword 
+	where name like #{name}
+</select>
+
+<select id="listKeywordByCon" parameterType="String" resultType="String">
+	select name
+	from t_keyword 
+	where fullpy like #{str} or shortpy like #{str}
+</select>
+
+</mapper>

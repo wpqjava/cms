@@ -1,0 +1,4 @@
+package org.wpq.cms.mapper;
+
+public interface IGroupMapper {
+}

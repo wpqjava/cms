@@ -1,0 +1,8 @@
+org\wpq\cms\service\IChannelService.class
+org\wpq\cms\service\ChannelService.class
+org\wpq\cms\service\TopicService.class
+org\wpq\cms\service\AttachmentService.class
+org\wpq\cms\service\KeywordService.class
+org\wpq\cms\service\IAttachmentService.class
+org\wpq\cms\service\ITopicService.class
+org\wpq\cms\service\IKeywordService.class

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.ITopicMapper">  
+<insert id="add" parameterType="org.wpq.cms.model.Topic" flushCache="true" useGeneratedKeys="true" keyProperty="id">  
+   insert into t_topic values (null,#{title},#{keyword},0,#{recommend},#{content},#{summary}
+   ,#{channelPicId},#{createDate},#{publishDate},#{author},#{channel.id},#{user.id})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_topic where id=#{id}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.Topic">
+	update t_topic set title=#{title},
+	keyword=#{keyword},
+	status=#{status},
+	recommend=#{recommend},
+	content=#{content},
+	summary=#{summary},
+	channel_pic_id=#{channelPicId},
+	create_date=#{createDate},
+	publish_date=#{publishDate},
+	author=#{author},
+	channel_id=#{channel.id},
+	user_id=#{user.id} where id=#{id}
+</update>
+
+<update id="updateStatus" parameterType="map">
+	update t_topic set 
+	status=#{status}
+	where id=#{id}
+</update>
+
+<select id="load" parameterType="int" resultMap="topicMap">
+	select *,t1.id as 'tid'
+	from t_topic t1 
+	left join t_channel t2 on (t1.channel_id=t2.id) 
+	left join t_user t3 on (t1.user_id=t3.id)
+	where t1.id=#{id}
+</select>
+
+<select id="listIndexTopicByCid" resultType="org.wpq.cms.model.Topic" parameterType="map">
+	select *
+	from t_topic 
+	where channel_id=#{id} AND status = 1
+	order by id desc limit 0,#{max} 
+</select>
+
+<select id="findByUserIdConCIdStatus" resultMap="topicMap" parameterType="map">
+	select *,t1.id as 'tid'
+	from t_topic t1 
+	left join t_channel t2 on (t1.channel_id=t2.id) 
+	left join t_user t3 on (t1.user_id=t3.id)
+	<where>
+		<if test="con!=null">t1.title like #{con}</if>
+		<if test="cid!=null">AND t1.channel_id = #{cid}</if>
+		<if test="uid!=null">AND t1.user_id = #{uid}</if>
+		<if test="status!=null">AND t1.status = #{status}</if>
+	</where>
+	order by tid desc limit #{pageOffset},#{pageSize} 
+</select>
+
+<select id="countByUserIdConCIdStatus" resultType="long" parameterType="map">
+	select count(*)
+	from t_topic  
+	<where>
+		<if test="con!=null">title like #{con}</if>
+		<if test="cid!=null">AND channel_id = #{cid}</if>
+		<if test="uid!=null">AND user_id = #{uid}</if>
+		<if test="status!=null">AND status = #{status}</if>
+	</where>
+</select>
+
+<resultMap type="org.wpq.cms.model.Topic" id="topicMap" autoMapping="true">
+	<id column="tid" property="id"/>
+	<result column="title" property="title"/>
+	<result column="keyword" property="keyword"/>
+	<result column="status" property="status"/>
+	<result column="recommend" property="recommend"/>
+	<result column="content" property="content"/>
+	<result column="summary" property="summary"/>
+	<result column="channe_pic_id" property="channelPicId"/>
+	<result column="create_date" property="createDate"/>
+	<result column="publish_date" property="publishDate"/>
+	<result column="author" property="author"/>
+	<association property="user" javaType="org.wpq.cms.model.User">
+		<id column="user_id" property="id"/>
+		<result column="nickname" property="nickname"/>
+	</association>
+	<association property="channel" javaType="org.wpq.cms.model.Channel" autoMapping="true">
+		<id column="channel_id" property="id"/>
+		<result column="name" property="name"/>
+	</association>
+</resultMap>
+
+</mapper>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<t_channel id="1" name="wpq" custom_link="1" custom_link_url="1" channel_type="NAV_CHANNEL" 
+	is_top_intro="1" is_nav="1" is_recomman="1" status="1" orders="1"/>
+	<t_channel id="2" name="zjb" custom_link="2" custom_link_url="2" channel_type="NAV_CHANNEL" 
+	is_top_intro="2" is_nav="2" is_recomman="2" status="2" orders="2"/>
+	<t_channel id="3" name="lbj" custom_link="3" custom_link_url="3" channel_type="NAV_CHANNEL" 
+	is_top_intro="3" is_nav="3" is_recomman="3" status="3" orders="3"/>
+</dataset>

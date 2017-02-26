@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.IRoleMapper">  
+
+<insert id="add" parameterType="org.wpq.cms.model.Role"  flushCache="true" useGeneratedKeys="true" keyProperty="id" >  
+   insert into t_role values (null,#{name},#{roleType,typeHandler=org.apache.ibatis.type.EnumTypeHandler})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_role where id=#{id}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.Role">
+	update t_role set name=#{name},role_type=#{roleType,typeHandler=org.apache.ibatis.type.EnumTypeHandler} where id=#{id}
+</update>
+
+<select id="load" parameterType="int" resultMap="roleMap">
+	select * from t_role where id=#{id}
+</select>
+
+<select id="listRoleByUserId" parameterType="int" resultMap="roleMap02">
+	select * from t_user_role t1 left join t_role t2 on (t1.role_id = t2.id) where t1.user_id=#{id}
+</select>
+
+<select id="listAll" resultMap="roleMap">
+	select * from t_role
+</select>
+
+<resultMap type="org.wpq.cms.model.Role" id="roleMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="role_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="roleType"/>
+</resultMap>
+
+<resultMap type="org.wpq.cms.model.Role" id="roleMap02" autoMapping="true">
+	<id column="role_id" property="id"/>
+	<result column="role_type" typeHandler="org.apache.ibatis.type.EnumTypeHandler" property="roleType"/>
+</resultMap>
+
+</mapper>

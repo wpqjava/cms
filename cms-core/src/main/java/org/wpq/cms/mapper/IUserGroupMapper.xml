@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.IUserGroupMapper">  
+<insert id="add" parameterType="org.wpq.cms.model.UserGroup" flushCache="true" useGeneratedKeys="true" keyProperty="id">  
+   insert into t_user_group values (null,#{user.id},#{group.id})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_user_group where id=#{id}
+</delete>
+
+<delete id="deleteByUserId" parameterType="int">
+	delete from t_user_group where user_id=#{id}
+</delete>
+
+<delete id="deleteByUserIdAndGroupId" parameterType="map">
+	delete from t_user_group where user_id=#{userId} and group_id=#{groupId}
+</delete>
+
+<delete id="deleteByGroupId" parameterType="int">
+	delete from t_user_group where group_id=#{groupId}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.UserGroup">
+	update t_user_group set user_id=#{user.id},group_id=#{group.id} where id=#{id}
+</update>
+
+<select id="load" parameterType="int" resultMap="userGroupMap">
+	select *,t1.id as 'tug_id' 
+	from t_user_group t1 
+	left join t_user t2 on (t1.user_id=t2.id) 
+	left join t_group t3 on (t1.group_id=t3.id)
+	where t1.id=#{id}
+</select>
+
+<select id="listByUserId" resultMap="userGroupMap" parameterType="int">
+	select *,t1.id as 'tug_id' 
+	from t_user_group t1 
+	left join t_user t2 on (t1.user_id=t2.id) 
+	left join t_group t3 on (t1.group_id=t3.id)
+	where t2.id=#{id}
+</select>
+
+<select id="listByGroupId" resultMap="userGroupMap" parameterType="int">
+	select *,t1.id as 'tug_id' 
+	from t_user_group t1 
+	left join t_user t2 on (t1.user_id=t2.id) 
+	left join t_group t3 on (t1.group_id=t3.id)
+	where t3.id=#{id}
+</select>
+
+<select id="listGroupIdByUserId" resultType="int" parameterType="int">
+	select group_id
+	from t_user_group  
+	where user_id=#{userId}
+</select>
+
+<resultMap type="org.wpq.cms.model.UserGroup" id="userGroupMap" autoMapping="true">
+	<id column="tug_id" property="id"/>
+	<association property="user" javaType="org.wpq.cms.model.User">
+		<id column="user_id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<result column="nickname" property="nickname"/>
+		<result column="phone" property="phone"/>
+		<result column="status" property="status"/>
+		<result column="email" property="email"/>
+		<result column="create_date" property="createDate" typeHandler="org.apache.ibatis.type.DateTypeHandler"/>
+	</association>
+	<association property="group" javaType="org.wpq.cms.model.Group" autoMapping="true">
+		<id column="group_id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="descri" property="descri"/>
+	</association>
+</resultMap>
+
+</mapper>

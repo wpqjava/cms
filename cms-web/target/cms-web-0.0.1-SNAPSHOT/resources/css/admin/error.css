@@ -1,0 +1,23 @@
+* {
+	margin:0px;
+	padding: 0px;
+	font-size:12px;
+}
+
+#container{
+	height:700px;
+	background: url("img/error-bgi.jpg") no-repeat;
+	margin:3px 0px 0px 3px;
+}
+#message{
+	margin-left:50%;
+	position: absolute;
+	left:-225px;
+	top:300px;
+	width:450px;
+	height:300px;
+}
+
+.errorMessage{
+	color:red;
+}

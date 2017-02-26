@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<t_user id="1" username="wpq" password="wpq" nickname="王霈奇" email="wpq@163.com" phone="18698575951" />
+	<t_user id="2" username="zjb" password="zjb" nickname="臧洁冰" email="zjb@163.com" phone="18698575951" />
+	<t_user id="3" username="zwy" password="zwy" nickname="朱婉仪" email="zwy@163.com" phone="18698575951" />
+	
+	<t_group id="1" name="财务处" descri="这是财务处"/>
+	<t_group id="2" name="政教处" descri="这是政教处"/>
+	<t_group id="3" name="宣传处" descri="这是宣传处"/>
+	
+	<t_role id="1" name="admin" role_type="ADMIN"/>
+	<t_role id="2" name="publish" role_type="PUBLISH"/>
+	<t_role id="3" name="audit" role_type="AUDIT"/>
+	
+	<t_user_group id="1" user_id="1" group_id="1"/>
+	<t_user_group id="2" user_id="2" group_id="2"/>
+	<t_user_group id="3" user_id="3" group_id="3"/>
+	
+	<t_user_role id="1" user_id="1" role_id="1"/>
+	<t_user_role id="2" user_id="2" role_id="2"/>
+	<t_user_role id="3" user_id="3" role_id="3"/>
+</dataset>

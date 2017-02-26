@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="org.wpq.cms.mapper.IAttachmentMapper">  
+<insert id="add" parameterType="org.wpq.cms.model.Attachment" flushCache="true" useGeneratedKeys="true" keyProperty="id">  
+   insert into t_attach values (null,#{oldName},#{newName},#{type},#{suffix},#{size}
+   ,#{isIntroPic},#{isImg},#{isSpePic},#{isShowPic},#{topic.id})
+</insert>
+
+<delete id="delete" parameterType="int">
+	delete from t_attach where id=#{id}
+</delete>
+
+<delete id="deleteByTopicId" parameterType="int">
+	delete from t_attach where topic_id=#{tid}
+</delete>
+
+<update id="update" parameterType="org.wpq.cms.model.Attachment">
+	update t_attach 
+	set old_name=#{oldName},
+	new_name=#{newName},
+	attach_type=#{type},
+	suffix=#{suffix},
+	size=#{size},
+	is_intro_pic=#{isIntroPic},
+	is_img=#{isImg},
+	is_spe_pic=#{isSpePic},
+	is_show_pic=#{isShowPic},
+	topic_id=#{topic.id}
+ 	where id=#{id}
+</update>
+
+<update id="updateAttachTopicId" parameterType="map">
+	update t_attach 
+	set 
+	topic_id=#{tid}
+ 	where id=#{id}
+</update>
+
+<select id="load" parameterType="int" resultMap="attachMap">
+	select *,t1.id as 'aid'
+	from t_attach t1 
+	left join t_topic t2 on (t1.topic_id=t2.id) 
+	where t1.id=#{id}
+</select>
+
+<select id="listByTopicId" parameterType="int" resultMap="defaultMap">
+	select *
+	from t_attach 
+	where topic_id =#{id}
+</select>
+
+<select id="listIdByTopicId" parameterType="int" resultType="int">
+	select id
+	from t_attach 
+	where topic_id =#{id}
+</select>
+
+<select id="listUnusedAtt" resultMap="defaultMap">
+	select *
+	from t_attach 
+	where topic_id is null;
+</select>
+
+<select id="listIndexAtt" parameterType="map" resultMap="attachMap">
+	select *,a.id as 'aid'
+	from t_attach a 
+	left join t_topic t on (a.topic_id=t.id) 
+	where t.channel_id = #{cid} AND t.status = 1 
+	order by a.id desc limit 0,#{max}
+</select>
+
+<select id="listChannelShowAtt" parameterType="map" resultMap="attachMap">
+	select *,a.id as 'aid'
+	from t_attach a 
+	left join t_topic t on (a.topic_id=t.id) 
+	where t.channel_id = #{cid} AND t.status = 1 AND a.is_show_pic = 1
+	order by a.id desc limit 0,#{max}
+</select>
+
+<select id="listByCon" parameterType="map" resultMap="attachMap">
+	select *,a.id as 'aid'
+	from t_attach a 
+	left join t_topic t on (a.topic_id=t.id) 
+	where t.title like #{con} AND t.status = 1 AND a.is_show_pic = 1
+	order by a.id desc limit 0,#{max}
+</select>
+
+<resultMap type="org.wpq.cms.model.Attachment" id="attachMap" autoMapping="true">
+	<id column="aid" property="id"/>
+	<result column="old_name" property="oldName"/>
+	<result column="new_name" property="newName"/>
+	<result column="attach_type" property="type"/>
+	<result column="suffix" property="suffix"/>
+	<result column="size" property="size"/>
+	<result column="is_intro_pic" property="isIntroPic"/>
+	<result column="is_img" property="isImg"/>
+	<result column="is_spe_pic" property="isSpePic"/>
+	<result column="is_show_pic" property="isShowPic"/>
+	<association property="topic" javaType="org.wpq.cms.model.Topic">
+		<id column="topic_id" property="id"/>
+		<result column="title" property="title"/>
+		<result column="summary" property="summary"/>
+		<result column="publish_date" typeHandler="org.apache.ibatis.type.DateTypeHandler" property="publishDate"/>
+	</association>
+</resultMap>
+
+<resultMap type="org.wpq.cms.model.Attachment" id="defaultMap" autoMapping="true">
+	<id column="id" property="id"/>
+	<result column="old_name" property="oldName"/>
+	<result column="new_name" property="newName"/>
+	<result column="attach_type" property="type"/>
+	<result column="suffix" property="suffix"/>
+	<result column="size" property="size"/>
+	<result column="is_intro_pic" property="isIntroPic"/>
+	<result column="is_img" property="isImg"/>
+	<result column="is_spe_pic" property="isSpePic"/>
+	<result column="is_show_pic" property="isShowPic"/>
+</resultMap>
+
+</mapper>
